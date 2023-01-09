@@ -1,4 +1,4 @@
-## Text Classification Project
+# Text Classification Project
 
 This project involves the classification of text data that consists of 
 URLs and HTML files. The goal is to take as input either a URL or an 
