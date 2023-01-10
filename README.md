@@ -24,7 +24,7 @@ libraries:
 - seaborn (version 0.11.2)
 - spacy (version 3.4.2)
 - tqdm (version 4.64.0)
-- newspaper (version 0.2.8)
+- newspaper3k (version 0.2.8)
 - scikit-learn (version 1.1.1)
 - datasets (version 2.8.0)
 - transformers (version 4.25.1)
