@@ -1322,6 +1322,8 @@ if '__name__' == '__main__':
 
     tf_train_dataset, tf_val_dataset, tf_test_dataset = create_tf_dataset(dataset_encoded, tokenizer)
 
+    ## Modeling
+
     config = create_distilbert_config(dropout=0.1, attention_dropout=0.1)
 
     tf_model = (TFAutoModelForSequenceClassification.from_pretrained(
