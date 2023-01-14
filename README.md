@@ -8,9 +8,17 @@ release, Article, Blog, and MISC. MISC is a catch-all category for
 texts that do not belong to any of the other five categories.
 
 ### Getting Started
-
-Instructions for setting up and using the project will be provided in 
-the relevant sections of the README.
+The code can be executed from both .ipynb or .py versions, which are 
+located in the main directory. In order to work, the two csv files must 
+be located in the same directory, while the HTML files to read will be
+located in a folder named `html_files_Nov-24-2022`.
+For NDA reasons, the files used in this real-world project are not public.
+Variables and models will be saved in their respective directories, for
+what we will need to execute in the main directory the commands:
+```
+! mkdir models
+! mkdir saved_variables
+'''
 
 ### Prerequisites
 
@@ -35,6 +43,3 @@ To install the required libraries and dependencies using pip, you can
 use the following command:
 
 `pip install -r requirements.txt`
-
-### Usage
-Provide instructions for using the project here.
