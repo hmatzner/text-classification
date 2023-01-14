@@ -42,4 +42,6 @@ libraries:
 To install the required libraries and dependencies using pip, you can 
 use the following command:
 
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
