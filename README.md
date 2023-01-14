@@ -18,7 +18,7 @@ what we will need to execute in the main directory the commands:
 ```
 ! mkdir models
 ! mkdir saved_variables
-'''
+```
 
 ### Prerequisites
 
