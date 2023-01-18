@@ -1,4 +1,7 @@
-import urllib3
+import tensorflow
+
+"""
+# import urllib3
 import os
 import re
 import pickle
@@ -7,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import spacy
+# import spacy
 
 from typing import List, Dict, Tuple, Union, Any
 from tqdm import tqdm
@@ -22,18 +25,18 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
-# import datasets
+import datasets
 from datasets.dataset_dict import DatasetDict
 from datasets import Dataset, load_dataset
 
-import transformers
-from transformers import pipeline
-from transformers import AutoTokenizer, DataCollatorWithPadding, DistilBertConfig
-# from transformers import TFDistilBertModel
-from transformers import TFAutoModel, TFAutoModelForSequenceClassification
-import tensorflow as tf
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.models import load_model
+# import transformers
+# from transformers import pipeline
+# from transformers import AutoTokenizer, DataCollatorWithPadding, DistilBertConfig
+# # from transformers import TFDistilBertModel
+# from transformers import TFAutoModel, TFAutoModelForSequenceClassification
+# import tensorflow as tf
+# from tensorflow.keras.callbacks import EarlyStopping
+# from tensorflow.keras.models import load_model
 
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import *
@@ -41,7 +44,7 @@ from nltk.corpus import stopwords
 import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
-
+"""
 
 MAIN_FOLDER = '/content/drive/MyDrive/url_classification/'
 HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
@@ -53,7 +56,7 @@ TEXT = 'text'
 LEMMATIZED = 'cleaned_lemmatized_text'
 TARGET = 'label'
 
-nlp = spacy.load('en_core_web_sm')
+# nlp = spacy.load('en_core_web_sm')
 
 DISTILBERT_MAX_INPUT = 510  # 512 - the [CLS] and [SEP] tokens
 
@@ -65,7 +68,7 @@ num_labels = len(labels_encoded)
 REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^0-9A-Za-z #+_]')
 STOPWORDS = set(stopwords.words('english'))
-
+'''
 os.chdir(MAIN_FOLDER)
 
 for path in (MODELS_FOLDER, VARIABLES_FOLDER):
@@ -1114,7 +1117,7 @@ def print_confusion_matrix(clf_name: str, y_test: List[int], y_pred: List[int], 
         print('\n' + classification_report(y_test, y_pred))
 
 
-if '__name__' == '__main__':
+if not '__name__' == '__main__':
     df1 = read_csv('activities_unlabeled.csv',
                    usecols=['File Name', 'Label'],
                    namecols=['filename', 'label'],
@@ -1357,3 +1360,4 @@ if '__name__' == '__main__':
     plot_distribution_of_confidences(y_test, y_pred, y_probs)
 
     save_variables({'df_mistakes_distilbert_nn': df_mistakes})
+'''
