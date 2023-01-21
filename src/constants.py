@@ -1,5 +1,4 @@
 import os
-import re
 import spacy
 from nltk.stem.porter import *
 from nltk.corpus import stopwords
@@ -7,10 +6,11 @@ import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
 
-MAIN_FOLDER = '/Users/hernanmatzner/text_classification/'
+MAIN_FOLDER = '/Users/hernanmatzner/BrewProject/'
 DATA_FOLDER = MAIN_FOLDER + 'data/'
 HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
 VARIABLES_FOLDER = MAIN_FOLDER + 'saved_variables/'
+MODELS_FOLDER = MAIN_FOLDER + 'models/'
 
 URL = 'url'
 TEXT = 'text'
