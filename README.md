@@ -44,7 +44,8 @@ use the following command:
 pip install -r requirements.txt
 ```
 
-Code Structure
+### Code Structure
+
 In this project, there are nine python files located in `src`, 
 each with a specific purpose:
 
