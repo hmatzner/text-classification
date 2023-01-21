@@ -1,65 +1,80 @@
 from variables import save_variables, read_variable
-from preprocessing_text import *
-from preprocessing_for_models import *
-from eda import *
-from modeling import *
+from constants import MODELS_FOLDER, TARGET, LEMMATIZED, labels_encoded
+from preprocessing import vectorize_data, split_data
+from eda import create_df_mistakes, plot_distribution_of_confidences
+from modeling import print_stratified_kfold, get_best_clf, print_confusion_matrix, fit_model, predict
+
+import pickle
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import MultinomialNB
+
+df_text = read_variable('df_text')
 
 
 def main():
-    df1 = read_csv('activities_unlabeled.csv',
-                   usecols=['File Name', 'Label'],
-                   namecols=['filename', 'label'],
-                   remove_nan='filename',
-                   ignore_dash=True)
 
-    htmls = read_htmls(df1, 'filename')
+    # Preprocessing
 
-    toi_articles = read_articles(htmls)
+    df_text[TARGET] = df_text[TARGET].replace(labels_encoded)
 
-    df_text1 = create_df_from_articles(df1, toi_articles)
+    X_train, X_test, y_train, y_test = split_data(
+        df_text,
+        LEMMATIZED,
+        test_size=0.2,
+        random_state=0)
 
-    save_variables(variables={'df_text1': df_text1})
+    X_train_tr, X_test_tr, vectorizer = vectorize_data(LEMMATIZED, X_train, X_test, ngram_range=(1, 1))
 
-    df2 = read_csv('activities_labeled13.csv',
-                   usecols=['url', 'true_label'],
-                   namecols=['url', 'label'],
-                   remove_nan='label')
+    # Modeling
 
-    labels_old, indexes_old, texts_old, urls_old = read_or_create_variables(
-        ['labels_old', 'indexes_old', 'texts_old', 'urls_old'])
+    clfs = [
+        ('LogisticRegression', LogisticRegression(max_iter=3000,
+                                                  class_weight='balanced')
+         ),
+        ('RandomForest', RandomForestClassifier(max_depth=18,
+                                                n_estimators=75,
+                                                random_state=0)
+         ),
+        ('KNN 5', KNeighborsClassifier(n_neighbors=5)
+         ),
+        ('SVM C1', SVC(C=1,
+                       class_weight='balanced')
+         ),
+        ('MultinomialNB', MultinomialNB()
+         ),
+    ]
 
-    urls_new = create_new_urls(df2, 'url', urls_old)
+    print_stratified_kfold(clfs, X_train_tr, y_train)
 
-    texts_new, indexes_new, idx_label_to_remove = read_texts_from_urls(urls_new, urls_old)
+    clf, clf_name, test_acc = get_best_clf(clfs, X_train_tr, X_test_tr, y_train, y_test)
+    print(f'Best classifier: {clf_name}, test accuracy: {test_acc:.3f}')
 
-    labels_new = create_new_labels(df2, urls_new, idx_label_to_remove)
+    # Chosen model
 
-    labels, indexes, texts, urls = update_variables(old_variables=[labels_old, indexes_old, texts_old, urls_old],
-                                                    new_variables=[labels_new, indexes_new, texts_new,
-                                                                   urls_new.tolist()])
+    clf = fit_model(LogisticRegression(max_iter=3000,
+                                       class_weight='balanced',
+                                       ),
+                    X_train_tr,
+                    y_train,
+                    )
 
-    assert len(texts) == len(pd.Series(urls).loc[indexes]) == len(indexes) == len(labels)
+    y_pred = predict(clf, X_test_tr)
+    y_probs = clf.predict_proba(X_test_tr)
 
-    df_text2 = create_df_from_lists(labels, indexes, texts, urls)
+    print_confusion_matrix('Logistic Regression', y_test, y_pred, with_report=True)
 
-    save_variables(variables={'labels_old': labels,
-                              'indexes_old': indexes,
-                              'texts_old': texts,
-                              'urls_old': urls,
-                              'df_text2': df_text2})
+    pickle.dump(clf, open(f'{MODELS_FOLDER}bow_lr_clf', 'wb'))
 
-    df_text2 = remove_duplicates(df_text2, URL)
+    df_mistakes = create_df_mistakes(df_text, LEMMATIZED, X_test, y_test, y_pred, y_probs)
 
-    df_text = pd.concat([df_text1, df_text2]).reset_index(drop=True)
+    save_variables({'df_mistakes_bow_lr_clf': df_mistakes})
 
-    df_text = remove_duplicates(df_text, TEXT)
-
-    df_text = remove_rows(df_text, with_errors=True, irrelevant=True, below_threshold=51)
-
-    df_text[LEMMATIZED] = df_text[TEXT].apply(lambda x: text_preprocessing(x, lemmatize=True, clean=True))
-
-    save_variables({'df_text': df_text})
+    plot_distribution_of_confidences(y_test, y_pred, y_probs,
+                                     print_statistical_measures=True)
 
 
-if '__name__' == '__main__':
+if __name__ == '__main__':
     main()
