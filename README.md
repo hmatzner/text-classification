@@ -53,6 +53,9 @@ each with a specific purpose:
 different files.
 - `variables.py`: This file includes functions that simplify the process of 
 reading and saving variables.
+- `preprocess_data`: This file executes the first preprocessing step by
+creating and saving the dataframe `df_text` that will be needed in all three
+approaches.
 - `preprocessing.py`: This file includes functions for the preprocessing of 
 all three approaches.
 - `eda.py`: This file includes functions to perform exploratory data 
