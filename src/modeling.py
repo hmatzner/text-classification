@@ -131,14 +131,14 @@ def print_val_scores(scores: List[float], extra_info: bool = False) -> None:
         print(f'(std: {np.std(scores):.3f}, min: {min(scores):.3f}, max: {max(scores):.3f})')
 
 
-def print_confusion_matrix(clf_name: str, y_test: List[int], y_pred: List[int], with_report: bool = False) -> None:
+def print_confusion_matrix(clf_name: str, y_test: List[int], y_pred: np.ndarray, with_report: bool = False) -> None:
     """
     Prints a confusion matrix and (optional) a classification report for a given classifier.
 
     Parameters:
     - clf_name: string containing the name of the classifier.
     - y_test: list of integers with the correct labels of the test set.
-    - y_pred: list of integers with the predicted labels of the test set.
+    - y_pred: numpy array of integers with the predicted labels of the test set.
     - with_report: bool indicating if a classification report should be printed.
 
     Returns:
