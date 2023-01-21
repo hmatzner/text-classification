@@ -932,7 +932,7 @@ def compile_model(tf_model: tf.keras.Model, learning_rate: float = 5e-6) -> tf.k
     Compiles a TensorFlow model with Adam optimizer and Sparse Categorical Crossentropy loss.
 
     Parameters:
-    - tf_model: a TensorFlow model to be compiled.
+    TFAutoModelForSequenceClassification
     - learning_rate: the learning rate for the Adam optimizer. Default is 5e-6.
 
     Returns:
