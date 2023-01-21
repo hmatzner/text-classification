@@ -1,39 +1,14 @@
 from variables import save_variables, read_variable
+import constants
+from constants import VARIABLES_FOLDER, DATA_FOLDER, HTML_FOLDER, TARGET, TEXT, URL, LEMMATIZED
 
 import os
-from typing import List, Tuple, Any
 import pandas as pd
+import numpy as np
+from typing import List, Tuple, Any
 from tqdm import tqdm
-import spacy
 import newspaper
 from newspaper import Article
-import numpy as np
-from nltk.stem.porter import *
-from nltk.corpus import stopwords
-import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
-
-MAIN_FOLDER = '/Users/hernanmatzner/text_classification/'
-DATA_FOLDER = MAIN_FOLDER + 'data/'
-HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
-VARIABLES_FOLDER = MAIN_FOLDER + 'saved_variables/'
-
-URL = 'url'
-TEXT = 'text'
-LEMMATIZED = 'cleaned_lemmatized_text'
-TARGET = 'label'
-
-nlp = spacy.load('en_core_web_sm')
-
-REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]|@,;]')
-BAD_SYMBOLS_RE = re.compile('[^0-9A-Za-z #+_]')
-STOPWORDS = set(stopwords.words('english'))
-
-labels_encoded = {'Article': 0, 'Blog': 1, 'Event': 2, 'Webinar': 3, 'PR': 4, 'MISC': 5}
-labels_decoded = {y: x for x, y in labels_encoded.items()}
-
-os.chdir(MAIN_FOLDER)
 
 if not os.path.isdir(VARIABLES_FOLDER):
     os.makedirs(VARIABLES_FOLDER)
@@ -369,7 +344,7 @@ def remove_rows(df: pd.DataFrame, with_errors: bool = False,
         df = df[~(condition1 & condition2 & condition3)]
 
     if irrelevant:
-        df = df[df[TARGET].isin(labels_encoded)]
+        df = df[df[TARGET].isin(constants.labels_encoded)]
         df.reset_index(drop=True, inplace=True)
 
     # If the words that the text a URL contains is below this threshold, the row is discarded
@@ -394,12 +369,12 @@ def text_preprocessing(text: str, lemmatize: bool = False, clean: bool = False) 
     """
 
     if lemmatize:
-        text = ' '.join(token.lemma_ for token in nlp(text))
+        text = ' '.join(token.lemma_ for token in constants.nlp(text))
 
     if clean:
-        text = REPLACE_BY_SPACE_RE.sub(' ', text)
-        text = BAD_SYMBOLS_RE.sub('', text)
-        text = ' '.join(word for word in text.split() if word not in STOPWORDS)
+        text = constants.REPLACE_BY_SPACE_RE.sub(' ', text)
+        text = constants.BAD_SYMBOLS_RE.sub('', text)
+        text = ' '.join(word for word in text.split() if word not in constants.STOPWORDS)
 
     return text
 
