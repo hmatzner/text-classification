@@ -17,11 +17,22 @@ df_text = read_variable('df_text')
 
 
 def main():
+    """
+    Main function of the modules that fine-tunes the DistilBERT pre-trained model with Logistic Regression,
+    reports a confusion matrix, plots the distributions of confidence, and saves the relevant model and variables.
+
+    Parameters:
+    - None
+
+    Returns:
+    - None
+    """
+
     # Preprocessing
 
     df_text[TARGET] = df_text[TARGET].replace(labels_encoded)
 
-    # Extra preprocessing for ML approach
+    # Extra preprocessing
 
     X_train, X_test, y_train, y_test = split_data(df_text, column=TEXT, test_size=0.2, val_size=None, random_state=0)
 
@@ -52,6 +63,8 @@ def main():
                     'y_train_hidden': y_train_hidden,
                     'y_test_hidden': y_test_hidden,
                     })
+
+    # Modeling
 
     clfs = [
         ('LogisticRegression', LogisticRegression(max_iter=3000,

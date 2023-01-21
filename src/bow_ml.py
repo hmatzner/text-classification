@@ -15,6 +15,16 @@ df_text = read_variable('df_text')
 
 
 def main():
+    """
+    Main function of the modules that trains a Logistic Regression model on Bag of Words with TF-IDF vectorizer,
+    reports a confusion matrix, plots the distributions of confidence, and saves the relevant model and variables.
+
+    Parameters:
+    - None
+
+    Returns:
+    - None
+    """
 
     # Preprocessing
 
