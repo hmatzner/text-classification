@@ -1,15 +1,12 @@
-from typing import Dict, Tuple, Union, Any
+from constants import TEXT, TARGET
+
 import pandas as pd
+from typing import Dict, Tuple, Union, Any
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from datasets.dataset_dict import DatasetDict
 from datasets import Dataset
 from transformers import AutoTokenizer, TFAutoModel
-
-URL = 'url'
-TEXT = 'text'
-LEMMATIZED = 'cleaned_lemmatized_text'
-TARGET = 'label'
 
 distilbert_model = 'distilbert-base-uncased'
 tokenizer = AutoTokenizer.from_pretrained(distilbert_model)

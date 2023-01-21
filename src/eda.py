@@ -1,3 +1,5 @@
+from constants import URL, labels_encoded, labels_decoded
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,11 +8,6 @@ from typing import Union, Any
 from collections import Counter
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import word_tokenize
-
-URL = 'url'
-
-labels_encoded = {'Article': 0, 'Blog': 1, 'Event': 2, 'Webinar': 3, 'PR': 4, 'MISC': 5}
-labels_decoded = {y: x for x, y in labels_encoded.items()}
 
 
 def get_most_common_tokens(df: pd.DataFrame, column: str, amount: int = 10):
