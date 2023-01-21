@@ -105,18 +105,6 @@ def read_htmls(df: pd.DataFrame, column: str) -> List[str]:
         except FileNotFoundError:
             print(f'File {i} not found: "{filename}"')
 
-    # filenames = os.listdir(HTML_FOLDER)
-    # htmls = list()
-    # print(df)
-    #
-    # for i, filename in enumerate(tqdm(filenames)):
-    #     try:
-    #         with open(f'{HTML_FOLDER}{filename}') as f:
-    #             html = f.read()
-    #             htmls.append(html)
-    #     except FileNotFoundError:
-    #         print(f'File {i} not found: "{filename}"')
-
     return htmls
 
 
@@ -418,8 +406,16 @@ def text_preprocessing(text: str, lemmatize: bool = False, clean: bool = False) 
 
 def main():
     """
+    Main function of the module that reads in two CSV files, processes the data,
+    and saves the resulting dataframes to be used later by any model.
 
+    Parameters:
+    - None
+
+    Returns:
+    - None
     """
+
     df1 = read_csv(f'{DATA_FOLDER}activities_unlabeled.csv',
                    usecols=['File Name', 'Label'],
                    namecols=['filename', 'label'],
@@ -432,9 +428,7 @@ def main():
 
     df_text1 = create_df_from_articles(df1, toi_articles)
 
-    save_variables(variables={'df_text1_from_python': df_text1})
-
-    # df_text1 = read_variable('df_text1')
+    save_variables(variables={'df_text1': df_text1})
 
     df2 = read_csv(f'{DATA_FOLDER}activities_labeled13.csv',
                    usecols=['url', 'true_label'],
@@ -458,11 +452,11 @@ def main():
 
     df_text2 = create_df_from_lists(labels, indexes, texts, urls)
 
-    save_variables(variables={'labels_old_from_python': labels,
-                              'indexes_old_from_python': indexes,
-                              'texts_old_from_python': texts,
-                              'urls_old_from_python': urls,
-                              'df_text2_from_python': df_text2})
+    save_variables(variables={'labels_old': labels,
+                              'indexes_old': indexes,
+                              'texts_old': texts,
+                              'urls_old': urls,
+                              'df_text2': df_text2})
 
     df_text2 = remove_duplicates(df_text2, URL)
 
@@ -474,7 +468,7 @@ def main():
 
     df_text[LEMMATIZED] = df_text[TEXT].apply(lambda x: text_preprocessing(x, lemmatize=True, clean=True))
 
-    save_variables({'df_text_from_python': df_text})
+    save_variables({'df_text': df_text})
 
 
 if __name__ == '__main__':
