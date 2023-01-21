@@ -1,7 +1,5 @@
 from constants import MODELS_FOLDER, TARGET, TEXT, labels_encoded
 from variables import save_variables, read_variable
-# from modeling import tokenizer, tf_model
-
 from preprocessing import split_data, create_dataset_dict, tokenize, get_hidden_states
 from eda import create_df_mistakes, plot_distribution_of_confidences
 from modeling import print_stratified_kfold, print_confusion_matrix
