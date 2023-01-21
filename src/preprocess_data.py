@@ -5,16 +5,28 @@ from constants import VARIABLES_FOLDER, DATA_FOLDER, HTML_FOLDER, TARGET, TEXT, 
 import os
 import pandas as pd
 import numpy as np
+import spacy
 from typing import List, Tuple, Any
 from tqdm import tqdm
 import newspaper
 from newspaper import Article
+from nltk.stem.porter import *
+from nltk.corpus import stopwords
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
 
 if not os.path.isdir(VARIABLES_FOLDER):
     os.makedirs(VARIABLES_FOLDER)
 
 if not os.path.isdir(HTML_FOLDER):
     raise Exception('HTML folder with relevant files should be already created and located in the main folder.')
+
+nlp = spacy.load('en_core_web_sm')
+
+REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]|@,;]')
+BAD_SYMBOLS_RE = re.compile('[^0-9A-Za-z #+_]')
+STOPWORDS = set(stopwords.words('english'))
 
 
 def read_csv(csv_path: str, usecols: List[str] = None, namecols: List[str] = None, remove_nan: str = None,

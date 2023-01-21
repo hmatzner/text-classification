@@ -1,10 +1,4 @@
 import os
-import spacy
-from nltk.stem.porter import *
-from nltk.corpus import stopwords
-import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
 
 MAIN_FOLDER = '/Users/hernanmatzner/BrewProject/'
 DATA_FOLDER = MAIN_FOLDER + 'data/'
@@ -16,12 +10,6 @@ URL = 'url'
 TEXT = 'text'
 LEMMATIZED = 'cleaned_lemmatized_text'
 TARGET = 'label'
-
-nlp = spacy.load('en_core_web_sm')
-
-REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]|@,;]')
-BAD_SYMBOLS_RE = re.compile('[^0-9A-Za-z #+_]')
-STOPWORDS = set(stopwords.words('english'))
 
 labels_encoded = {'Article': 0, 'Blog': 1, 'Event': 2, 'Webinar': 3, 'PR': 4, 'MISC': 5}
 labels_decoded = {y: x for x, y in labels_encoded.items()}
