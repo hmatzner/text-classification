@@ -14,7 +14,8 @@ import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
 
-MAIN_FOLDER = '/Users/hernanmatzner/BrewProject/url_classification/'
+MAIN_FOLDER = '/Users/hernanmatzner/text_classification/'
+DATA_FOLDER = MAIN_FOLDER + 'data/'
 HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
 VARIABLES_FOLDER = MAIN_FOLDER + 'saved_variables/'
 
@@ -25,7 +26,7 @@ TARGET = 'label'
 
 nlp = spacy.load('en_core_web_sm')
 
-REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]|@,;]')
+REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^0-9A-Za-z #+_]')
 STOPWORDS = set(stopwords.words('english'))
 
@@ -76,8 +77,6 @@ def read_csv(csv_path: str, usecols: List[str] = None, namecols: List[str] = Non
     # All sections of blogs labeled as 'MISC/Blog?' become part of 'MISC'.
     df.loc[df[TARGET] == 'MISC/Blog?', TARGET] = 'MISC'
 
-    # df = df.sort_values(by='filename')
-
     df.reset_index(drop=True, inplace=True)
 
     return df
@@ -95,23 +94,8 @@ def read_htmls(df: pd.DataFrame, column: str) -> List[str]:
     - htmls: a list of strings, one for each HTML file.
     """
 
-    # filenames = df[column].values
-    # htmls = list()
-    #
-    # for i, orig_filename in enumerate(tqdm(filenames)):
-    #     try:
-    #         filename = 'http_-' + orig_filename[6:]
-    #         path = f'{HTML_FOLDER}{filename}'
-    #         print(path)
-    #         with open(path) as f:
-    #             html = f.read()
-    #             htmls.append(html)
-    #     except FileNotFoundError:
-    #         print(f'File {i} not found: "{filename}"')
-
-    filenames = os.listdir(HTML_FOLDER)
+    filenames = df[column].values
     htmls = list()
-    print(df)
 
     for i, filename in enumerate(tqdm(filenames)):
         try:
@@ -120,6 +104,18 @@ def read_htmls(df: pd.DataFrame, column: str) -> List[str]:
                 htmls.append(html)
         except FileNotFoundError:
             print(f'File {i} not found: "{filename}"')
+
+    # filenames = os.listdir(HTML_FOLDER)
+    # htmls = list()
+    # print(df)
+    #
+    # for i, filename in enumerate(tqdm(filenames)):
+    #     try:
+    #         with open(f'{HTML_FOLDER}{filename}') as f:
+    #             html = f.read()
+    #             htmls.append(html)
+    #     except FileNotFoundError:
+    #         print(f'File {i} not found: "{filename}"')
 
     return htmls
 
@@ -279,7 +275,6 @@ def create_new_labels(df: pd.DataFrame, urls_to_read: pd.Series, idx_label_to_re
     """
 
     labels_new = df.loc[urls_to_read.index, TARGET]
-    assert (labels_new == df.loc[labels_new.index, TARGET]).all()
     labels_new.reset_index(drop=True, inplace=True)
     labels_new = labels_new.drop(idx_label_to_remove).tolist()
 
@@ -425,23 +420,23 @@ def main():
     """
 
     """
-    # df1 = read_csv('activities_unlabeled.csv',
-    #                usecols=['File Name', 'Label'],
-    #                namecols=['filename', 'label'],
-    #                remove_nan='filename',
-    #                ignore_dash=True)
-    #
-    # htmls = read_htmls(df1, 'filename')
-    #
-    # toi_articles = read_articles(htmls)
-    #
-    # df_text1 = create_df_from_articles(df1, toi_articles)
-    #
-    # save_variables(variables={'df_text1_from_python': df_text1})
+    df1 = read_csv(f'{DATA_FOLDER}activities_unlabeled.csv',
+                   usecols=['File Name', 'Label'],
+                   namecols=['filename', 'label'],
+                   remove_nan='filename',
+                   ignore_dash=True)
 
-    df_text1 = read_variable('df_text1')
+    htmls = read_htmls(df1, 'filename')
 
-    df2 = read_csv('activities_labeled13.csv',
+    toi_articles = read_articles(htmls)
+
+    df_text1 = create_df_from_articles(df1, toi_articles)
+
+    save_variables(variables={'df_text1_from_python': df_text1})
+
+    # df_text1 = read_variable('df_text1')
+
+    df2 = read_csv(f'{DATA_FOLDER}activities_labeled13.csv',
                    usecols=['url', 'true_label'],
                    namecols=['url', 'label'],
                    remove_nan='label')
