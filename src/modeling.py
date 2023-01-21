@@ -126,8 +126,8 @@ def print_val_scores(scores: List[float], extra_info: bool = False) -> None:
         print(f'(std: {np.std(scores):.3f}, min: {min(scores):.3f}, max: {max(scores):.3f})')
 
 
-def print_confusion_matrix(clf_name: str, y_test: List[int], y_pred: Union[List[int], np.ndarray],
-                           with_report: bool = False) -> None:
+def print_confusion_matrix(clf_name: str, y_test: Union[List[int], np.ndarray],
+                           y_pred: Union[List[int], np.ndarray], with_report: bool = False) -> None:
     """
     Prints a confusion matrix and (optional) a classification report for a given classifier.
 
@@ -273,11 +273,12 @@ def create_distilbert_config(dropout: float = 0.1, attention_dropout: float = 0.
     return config
 
 
-def compile_model(learning_rate: float = 5e-6) -> tf.keras.Model:
+def compile_model(tf_model, learning_rate: float = 5e-6) -> tf.keras.Model:
     """
     Compiles a TensorFlow model with Adam optimizer and Sparse Categorical Crossentropy loss.
 
     Parameters:
+    - tf_model: a TensorFlow model to be compiled.
     - learning_rate: the learning rate for the Adam optimizer. Default is 5e-6.
 
     Returns:
