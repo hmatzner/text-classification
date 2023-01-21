@@ -1,7 +1,7 @@
 from typing import Dict, Any
 import pickle
 
-MAIN_FOLDER = '/Users/hernanmatzner/BrewProject/url_classification/'
+MAIN_FOLDER = '/Users/hernanmatzner/text_classification/'
 VARIABLES_FOLDER = MAIN_FOLDER + 'saved_variables/'
 
 

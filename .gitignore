@@ -1,0 +1,13 @@
+*.pptx
+*.csv
+*.pdf
+*.zip
+*.cfg
+img/
+old_csv_files/
+old_ipynb_files/
+saved_variables/
+saved_variables1/
+models/
+html_files_Nov-24-2022/
+__pycache__/

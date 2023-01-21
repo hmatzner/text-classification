@@ -1,5 +1,6 @@
-from variables import read_variable
+from variables import save_variables, read_variable
 
+import os
 from typing import List, Tuple, Any
 import pandas as pd
 from tqdm import tqdm
@@ -15,6 +16,7 @@ nltk.download('stopwords')
 
 MAIN_FOLDER = '/Users/hernanmatzner/BrewProject/url_classification/'
 HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
+VARIABLES_FOLDER = MAIN_FOLDER + 'saved_variables/'
 
 URL = 'url'
 TEXT = 'text'
@@ -29,6 +31,14 @@ STOPWORDS = set(stopwords.words('english'))
 
 labels_encoded = {'Article': 0, 'Blog': 1, 'Event': 2, 'Webinar': 3, 'PR': 4, 'MISC': 5}
 labels_decoded = {y: x for x, y in labels_encoded.items()}
+
+os.chdir(MAIN_FOLDER)
+
+if not os.path.isdir(VARIABLES_FOLDER):
+    os.makedirs(VARIABLES_FOLDER)
+
+if not os.path.isdir(HTML_FOLDER):
+    raise Exception('HTML folder with relevant files should be already created and located in the main folder.')
 
 
 def read_csv(csv_path: str, usecols: List[str] = None, namecols: List[str] = None, remove_nan: str = None,
@@ -61,10 +71,12 @@ def read_csv(csv_path: str, usecols: List[str] = None, namecols: List[str] = Non
         df = df[~df[remove_nan].isna()]
 
     if ignore_dash:
-        df = df[df['label'] != '-']
+        df = df[df[TARGET] != '-']
 
     # All sections of blogs labeled as 'MISC/Blog?' become part of 'MISC'.
     df.loc[df[TARGET] == 'MISC/Blog?', TARGET] = 'MISC'
+
+    # df = df.sort_values(by='filename')
 
     df.reset_index(drop=True, inplace=True)
 
@@ -83,8 +95,23 @@ def read_htmls(df: pd.DataFrame, column: str) -> List[str]:
     - htmls: a list of strings, one for each HTML file.
     """
 
-    filenames = df[column].values
+    # filenames = df[column].values
+    # htmls = list()
+    #
+    # for i, orig_filename in enumerate(tqdm(filenames)):
+    #     try:
+    #         filename = 'http_-' + orig_filename[6:]
+    #         path = f'{HTML_FOLDER}{filename}'
+    #         print(path)
+    #         with open(path) as f:
+    #             html = f.read()
+    #             htmls.append(html)
+    #     except FileNotFoundError:
+    #         print(f'File {i} not found: "{filename}"')
+
+    filenames = os.listdir(HTML_FOLDER)
     htmls = list()
+    print(df)
 
     for i, filename in enumerate(tqdm(filenames)):
         try:
@@ -392,3 +419,68 @@ def text_preprocessing(text: str, lemmatize: bool = False, clean: bool = False) 
         text = ' '.join(word for word in text.split() if word not in STOPWORDS)
 
     return text
+
+
+def main():
+    """
+
+    """
+    # df1 = read_csv('activities_unlabeled.csv',
+    #                usecols=['File Name', 'Label'],
+    #                namecols=['filename', 'label'],
+    #                remove_nan='filename',
+    #                ignore_dash=True)
+    #
+    # htmls = read_htmls(df1, 'filename')
+    #
+    # toi_articles = read_articles(htmls)
+    #
+    # df_text1 = create_df_from_articles(df1, toi_articles)
+    #
+    # save_variables(variables={'df_text1_from_python': df_text1})
+
+    df_text1 = read_variable('df_text1')
+
+    df2 = read_csv('activities_labeled13.csv',
+                   usecols=['url', 'true_label'],
+                   namecols=['url', 'label'],
+                   remove_nan='label')
+
+    labels_old, indexes_old, texts_old, urls_old = read_or_create_variables(
+        ['labels_old', 'indexes_old', 'texts_old', 'urls_old'])
+
+    urls_new = create_new_urls(df2, 'url', urls_old)
+
+    texts_new, indexes_new, idx_label_to_remove = read_texts_from_urls(urls_new, urls_old)
+
+    labels_new = create_new_labels(df2, urls_new, idx_label_to_remove)
+
+    labels, indexes, texts, urls = update_variables(old_variables=[labels_old, indexes_old, texts_old, urls_old],
+                                                    new_variables=[labels_new, indexes_new, texts_new,
+                                                                   urls_new.tolist()])
+
+    assert len(texts) == len(pd.Series(urls).loc[indexes]) == len(indexes) == len(labels)
+
+    df_text2 = create_df_from_lists(labels, indexes, texts, urls)
+
+    save_variables(variables={'labels_old_from_python': labels,
+                              'indexes_old_from_python': indexes,
+                              'texts_old_from_python': texts,
+                              'urls_old_from_python': urls,
+                              'df_text2_from_python': df_text2})
+
+    df_text2 = remove_duplicates(df_text2, URL)
+
+    df_text = pd.concat([df_text1, df_text2]).reset_index(drop=True)
+
+    df_text = remove_duplicates(df_text, TEXT)
+
+    df_text = remove_rows(df_text, with_errors=True, irrelevant=True, below_threshold=51)
+
+    df_text[LEMMATIZED] = df_text[TEXT].apply(lambda x: text_preprocessing(x, lemmatize=True, clean=True))
+
+    save_variables({'df_text_from_python': df_text})
+
+
+if __name__ == '__main__':
+    main()

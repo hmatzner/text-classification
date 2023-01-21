@@ -1,7 +1,27 @@
-import tensorflow
+# import transformers
+# import datasets
+# import newspaper
+# import sys
+# import tensorflow.keras
+# import pandas as pd
+# import sklearn as sk
+# import scipy as sp
+# import tensorflow as tf
+# import platform
+# print(f"Python Platform: {platform.platform()}")
+# print(f"Tensor Flow Version: {tf.__version__}")
+# print(f"Keras Version: {tensorflow.keras.__version__}")
+# print()
+# print(f"Python {sys.version}")
+# print(f"Pandas {pd.__version__}")
+# print(f"Scikit-Learn {sk.__version__}")
+# print(f"SciPy {sp.__version__}")
+# gpu = len(tf.config.list_physical_devices('GPU'))>0
+# print(f"GPUs: {len(tf.config.list_physical_devices('GPU'))}")
+# print("GPU is", "available" if gpu else "NOT AVAILABLE")
 
-"""
-# import urllib3
+
+import urllib3
 import os
 import re
 import pickle
@@ -10,7 +30,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# import spacy
+import spacy
 
 from typing import List, Dict, Tuple, Union, Any
 from tqdm import tqdm
@@ -29,14 +49,14 @@ import datasets
 from datasets.dataset_dict import DatasetDict
 from datasets import Dataset, load_dataset
 
-# import transformers
-# from transformers import pipeline
-# from transformers import AutoTokenizer, DataCollatorWithPadding, DistilBertConfig
-# # from transformers import TFDistilBertModel
-# from transformers import TFAutoModel, TFAutoModelForSequenceClassification
-# import tensorflow as tf
-# from tensorflow.keras.callbacks import EarlyStopping
-# from tensorflow.keras.models import load_model
+import transformers
+from transformers import pipeline
+from transformers import AutoTokenizer, DataCollatorWithPadding, DistilBertConfig
+# from transformers import TFDistilBertModel
+from transformers import TFAutoModel, TFAutoModelForSequenceClassification
+import tensorflow as tf
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.models import load_model
 
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import *
@@ -44,7 +64,7 @@ from nltk.corpus import stopwords
 import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
-"""
+
 
 MAIN_FOLDER = '/content/drive/MyDrive/url_classification/'
 HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
@@ -56,7 +76,7 @@ TEXT = 'text'
 LEMMATIZED = 'cleaned_lemmatized_text'
 TARGET = 'label'
 
-# nlp = spacy.load('en_core_web_sm')
+nlp = spacy.load('en_core_web_sm')
 
 DISTILBERT_MAX_INPUT = 510  # 512 - the [CLS] and [SEP] tokens
 
@@ -250,13 +270,14 @@ def read_or_create_variables(variable_names: List[str]) -> List[Any]:
     return variables
 
 
-def create_new_urls(df: pd.DataFrame, column: str) -> pd.Series:
+def create_new_urls(df: pd.DataFrame, column: str, urls_old: List[str]) -> pd.Series:
     """
     Creates the urls to read based on the difference between all URLs and the ones already read.
 
     Parameters:
     - df: a DataFrame with a column containing the URLs.
     - column: the name of the column in the DataFrame where the URLs are stored.
+    - urls_old: list of strings of the URLs that have already been read.
 
     Returns:
     - urls_new: pandas Series object with strings of the URLs to read.
@@ -839,14 +860,13 @@ def plot_distribution_of_confidences(y_test: pd.Series, y_pred: np.ndarray, y_pr
     sns.reset_orig()
 
 
-def create_tf_dataset(dataset_encoded: DatasetDict, tokenizer: AutoTokenizer, batch_size: int = 16) -> \
+def create_tf_dataset(dataset_encoded: DatasetDict, batch_size: int = 16) -> \
         Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
     """
     Converts a `DatasetDict` object to a tuple of `tf.data.Dataset` objects.
 
     Parameters:
     - dataset_encoded: DatasetDict object containing datasets with the encoded text data and labels.
-    - tokenizer: AutoTokenizer object that will be used to encode the text data.
     - batch_size: integer representing the number of samples per batch.
 
     Returns:
@@ -1117,7 +1137,7 @@ def print_confusion_matrix(clf_name: str, y_test: List[int], y_pred: List[int], 
         print('\n' + classification_report(y_test, y_pred))
 
 
-if not '__name__' == '__main__':
+if '__name__' == '__main__':
     df1 = read_csv('activities_unlabeled.csv',
                    usecols=['File Name', 'Label'],
                    namecols=['filename', 'label'],
@@ -1140,7 +1160,7 @@ if not '__name__' == '__main__':
     labels_old, indexes_old, texts_old, urls_old = read_or_create_variables(
         ['labels_old', 'indexes_old', 'texts_old', 'urls_old'])
 
-    urls_new = create_new_urls(df2, 'url')
+    urls_new = create_new_urls(df2, 'url', urls_old)
 
     texts_new, indexes_new, idx_label_to_remove = read_texts_from_urls(urls_new, urls_old)
 
@@ -1335,7 +1355,7 @@ if not '__name__' == '__main__':
     )
     )
 
-    tf_model = compile_model(tf_model, learning_rate=2e-6)
+    tf_model = compile_model(learning_rate=2e-6)
 
     tf_model = train_model(tf_model, tf_train_dataset, tf_val_dataset, epochs=1000, patience=5)
 
