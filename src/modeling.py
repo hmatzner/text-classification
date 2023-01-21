@@ -55,7 +55,8 @@ def get_best_clf(clfs: List[Tuple[str, Any]], X_train: pd.DataFrame, X_test: pd.
     return best_clf, best_clf_name, best_accuracy
 
 
-def print_stratified_kfold(clfs: List[Tuple[str, Any]], X_train: pd.DataFrame, y_train: pd.Series, n_splits: int = 5,
+def print_stratified_kfold(clfs: List[Tuple[str, Any]], X_train: Union[pd.DataFrame, np.ndarray],
+                           y_train: pd.Series, n_splits: int = 5,
                            cv: int = 5, with_train_val_len_start: bool = False) -> None:
     """
     Prints the results of a Stratified K-Fold cross-validation for a list of classifiers.
