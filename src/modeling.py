@@ -206,13 +206,14 @@ def predict(clf: Any, X_test: pd.DataFrame) -> np.ndarray:
 #     return accuracy
 
 
-def create_tf_dataset(dataset_encoded: DatasetDict, batch_size: int = 16) -> \
+def create_tf_dataset(dataset_encoded: DatasetDict, tokenizer: AutoTokenizer, batch_size: int = 16) -> \
         Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
     """
     Converts a `DatasetDict` object to a tuple of `tf.data.Dataset` objects.
 
     Parameters:
     - dataset_encoded: DatasetDict object containing datasets with the encoded text data and labels.
+    - tokenizer: AutoTokenizer object that will be used to encode the text data.
     - batch_size: integer representing the number of samples per batch.
 
     Returns:
