@@ -3,7 +3,7 @@ from constants import TARGET, labels_decoded, num_labels
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import List, Tuple, Any
+from typing import List, Tuple, Any, Union
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 from datasets.dataset_dict import DatasetDict
@@ -125,7 +125,8 @@ def print_val_scores(scores: List[float], extra_info: bool = False) -> None:
         print(f'(std: {np.std(scores):.3f}, min: {min(scores):.3f}, max: {max(scores):.3f})')
 
 
-def print_confusion_matrix(clf_name: str, y_test: List[int], y_pred: np.ndarray, with_report: bool = False) -> None:
+def print_confusion_matrix(clf_name: str, y_test: List[int], y_pred: Union[List[int], np.ndarray],
+                           with_report: bool = False) -> None:
     """
     Prints a confusion matrix and (optional) a classification report for a given classifier.
 
