@@ -2,7 +2,7 @@ from variables import save_variables, read_variable
 from constants import MODELS_FOLDER, TARGET, LEMMATIZED, labels_encoded
 from preprocessing import vectorize_data, split_data
 from eda import create_df_mistakes, plot_distribution_of_confidences
-from modeling import print_stratified_kfold, get_best_clf, print_confusion_matrix, fit_model, predict
+from modeling import print_stratified_kfold, get_best_clf, print_confusion_matrix
 
 import pickle
 from sklearn.linear_model import LogisticRegression
@@ -54,15 +54,14 @@ def main():
 
     # Chosen model
 
-    clf = fit_model(LogisticRegression(max_iter=3000,
-                                       class_weight='balanced',
-                                       ),
-                    X_train_tr,
-                    y_train,
-                    )
+    lr_clf = LogisticRegression(max_iter=3000,
+                                class_weight='balanced',
+                                )
 
-    y_pred = predict(clf, X_test_tr)
-    y_probs = clf.predict_proba(X_test_tr)
+    lr_clf.fit(X_train_tr, y_train)
+
+    y_pred = lr_clf.predict(X_test_tr)
+    y_probs = lr_clf.predict_proba(X_test_tr)
 
     print_confusion_matrix('Logistic Regression', y_test, y_pred, with_report=True)
 
