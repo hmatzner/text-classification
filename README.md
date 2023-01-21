@@ -8,10 +8,8 @@ release, Article, Blog, and MISC. MISC is a catch-all category for
 texts that do not belong to any of the other five categories.
 
 ### Getting Started
-The code can be executed from both .ipynb or .py versions, which are 
-located in the main directory. In order to work, the two csv files must 
-be located in the same directory, while the HTML files to read will be
-located in a folder named `html_files_Nov-24-2022`.
+In order to work, the two csv files must be located in the same directory, 
+while the HTML files to read will be located in a folder named `html_files_Nov-24-2022`.
 For NDA reasons, the files used in this real-world project are not public.
 Variables and models will be saved in their respective directories, for
 what we will need to execute in the main directory the commands:
@@ -45,3 +43,31 @@ use the following command:
 ```
 pip install -r requirements.txt
 ```
+
+Code Structure
+In this project, there are nine python files located in `src`, 
+each with a specific purpose:
+
+`constants.py`: This file contains constants that are imported and used by 
+different files.
+`variables.py`: This file includes functions that simplify the process of 
+reading and saving variables.
+`preprocessing.py`: This file includes functions for the preprocessing of 
+all three approaches.
+`eda.py`: This file includes functions to perform exploratory data 
+analysis 
+in all three approaches.
+`modeling.py`: This file includes functions for the modeling of all three 
+approaches.
+`bow_ml.py`: This file executes the first approach, which consists of a 
+Bag 
+of Words and TF-IDF + Machine Learning model.
+`distilbert_ml.py`: This file executes the second approach, which consists 
+of fine-tuning a pre-trained DistilBERT model with a Machine Learning 
+model.
+`distilbert_dl.py`: This file executes the third approach, which consists 
+of 
+fine-tuning a pre-trained DistilBERT model with a Deep Learning model.
+
+It is important to note that the data used in this project is 
+confidential, and therefore not publicly available. 
