@@ -1,8 +1,7 @@
-from typing import Dict, Any
-import pickle
+from constants import VARIABLES_FOLDER
 
-MAIN_FOLDER = '/Users/hernanmatzner/text_classification/'
-VARIABLES_FOLDER = MAIN_FOLDER + 'saved_variables/'
+import pickle
+from typing import Dict, Any
 
 
 def save_variables(variables: Dict[str, Any]) -> None:
