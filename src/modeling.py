@@ -8,12 +8,11 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 from datasets.dataset_dict import DatasetDict
 import transformers
-from transformers import AutoTokenizer, DataCollatorWithPadding, DistilBertConfig, TFAutoModel
+from transformers import AutoTokenizer, DataCollatorWithPadding, DistilBertConfig
 import tensorflow as tf
 
 distilbert_model = 'distilbert-base-uncased'
 tokenizer = AutoTokenizer.from_pretrained(distilbert_model)
-tf_model = TFAutoModel.from_pretrained(distilbert_model)
 
 
 def get_best_clf(clfs: List[Tuple[str, Any]], X_train: pd.DataFrame, X_test: pd.Series, y_train: pd.DataFrame,
