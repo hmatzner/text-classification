@@ -1,9 +1,12 @@
 # Text Classification Project
 
+## The goal
 This project involves the classification of text data that consists of 
 URLs and HTML files with their true label, each type in a different CSV file. 
 The goal is to take as input either one of the two
-and predict the subject matter of the text. The categories 
+and predict the subject matter of the text. 
+
+The categories 
 or labels that the model will predict are not disclosed,
 and are located in the `labels.py` file, which contains a unique constant:
 ```
