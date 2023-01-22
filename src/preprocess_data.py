@@ -1,5 +1,5 @@
 from variables import save_variables, read_variable
-import constants
+from labels import labels_encoded
 from constants import MAIN_FOLDER, VARIABLES_FOLDER, DATA_FOLDER, HTML_FOLDER, TARGET, TEXT, URL, LEMMATIZED
 
 import os
@@ -358,7 +358,7 @@ def remove_rows(df: pd.DataFrame, with_errors: bool = False,
         df = df[~(condition1 & condition2 & condition3)]
 
     if irrelevant:
-        df = df[df[TARGET].isin(constants.labels_encoded)]
+        df = df[df[TARGET].isin(labels_encoded)]
         df.reset_index(drop=True, inplace=True)
 
     # If the words that the text a URL contains is below this threshold, the row is discarded
