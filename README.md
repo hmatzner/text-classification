@@ -17,7 +17,7 @@ Each `'___'` is of type string and is the name of one of the true labels.
 We will be implementing three different approaches (models) to perform this
 task and compare their results.
 
-### Getting Started
+## Getting Started
 In order to work, the two CSV files must be located in `data/`, 
 while the HTML files to read will be located in `htmls/`.
 For NDA reasons, the files used in this real-world project are not public.
@@ -29,7 +29,7 @@ what we will need to execute in the main directory the commands:
 ! mkdir saved_variables
 ```
 
-### Prerequisites
+## Prerequisites
 
 To run the code in this file, you will need to install the following 
 libraries:
@@ -55,7 +55,7 @@ use the following command:
 pip install -r requirements.txt
 ```
 
-### Code structure and execution
+## Code structure and execution
 
 In this project, there are 10 python files located in `src`, 
 having six of them as main purpose being used by other modules and four
