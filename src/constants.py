@@ -1,4 +1,4 @@
-MAIN_FOLDER = '/Users/hernanmatzner/BrewProject/'
+MAIN_FOLDER = '/Users/hernanmatzner/text_classification/'
 DATA_FOLDER = MAIN_FOLDER + 'data/'
 HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
 VARIABLES_FOLDER = MAIN_FOLDER + 'saved_variables/'
