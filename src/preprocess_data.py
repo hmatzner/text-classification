@@ -1,6 +1,6 @@
 from variables import save_variables, read_variable
 import constants
-from constants import VARIABLES_FOLDER, DATA_FOLDER, HTML_FOLDER, TARGET, TEXT, URL, LEMMATIZED
+from constants import MAIN_FOLDER, VARIABLES_FOLDER, DATA_FOLDER, HTML_FOLDER, TARGET, TEXT, URL, LEMMATIZED
 
 import os
 import pandas as pd
@@ -15,6 +15,8 @@ from nltk.corpus import stopwords
 import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
+
+os.chdir(MAIN_FOLDER)
 
 if not os.path.isdir(VARIABLES_FOLDER):
     os.makedirs(VARIABLES_FOLDER)

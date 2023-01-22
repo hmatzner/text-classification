@@ -15,5 +15,3 @@ labels_encoded = {'Article': 0, 'Blog': 1, 'Event': 2, 'Webinar': 3, 'PR': 4, 'M
 labels_decoded = {y: x for x, y in labels_encoded.items()}
 
 num_labels = len(labels_encoded)
-
-os.chdir(MAIN_FOLDER)
