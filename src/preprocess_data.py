@@ -383,12 +383,12 @@ def text_preprocessing(text: str, lemmatize: bool = False, clean: bool = False) 
     """
 
     if lemmatize:
-        text = ' '.join(token.lemma_ for token in constants.nlp(text))
+        text = ' '.join(token.lemma_ for token in nlp(text))
 
     if clean:
-        text = constants.REPLACE_BY_SPACE_RE.sub(' ', text)
-        text = constants.BAD_SYMBOLS_RE.sub('', text)
-        text = ' '.join(word for word in text.split() if word not in constants.STOPWORDS)
+        text = REPLACE_BY_SPACE_RE.sub(' ', text)
+        text = BAD_SYMBOLS_RE.sub('', text)
+        text = ' '.join(word for word in text.split() if word not in STOPWORDS)
 
     return text
 
