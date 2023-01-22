@@ -1,5 +1,3 @@
-import os
-
 MAIN_FOLDER = '/Users/hernanmatzner/BrewProject/'
 DATA_FOLDER = MAIN_FOLDER + 'data/'
 HTML_FOLDER = MAIN_FOLDER + 'html_files_Nov-24-2022/'
