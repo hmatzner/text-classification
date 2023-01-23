@@ -16,11 +16,11 @@ Each `'___'` is of type string and is the name of one of the true labels.
 
 We will be implementing three different approaches (models) to perform this
 task and compare their results:
-1 - Bag of Words and TF-IDF vectorizer with a Machine Learning model chosen
+1. Bag of Words and TF-IDF vectorizer with a Machine Learning model chosen
 with cross-validation.
-2- DistilBERT embeddings fine-tuned with a Machine Learning model chosen
+2. DistilBERT embeddings fine-tuned with a Machine Learning model chosen
 with cross-validation.
-3- DistilBERT embeddings fine-tuned with Deep Learning.
+3. DistilBERT embeddings fine-tuned with Deep Learning.
 
 ## Getting Started
 In order to work, the two CSV files must be located in `data/`, 
