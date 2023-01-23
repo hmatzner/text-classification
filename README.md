@@ -15,7 +15,12 @@ labels_encoded = {'___': 0, '___': 1, '___': 2, '___': 3, '___': 4, '___': 5}
 Each `'___'` is of type string and is the name of one of the true labels.
 
 We will be implementing three different approaches (models) to perform this
-task and compare their results.
+task and compare their results:
+1 - Bag of Words and TF-IDF vectorizer with a Machine Learning model chosen
+with cross-validation.
+2- DistilBERT embeddings fine-tuned with a Machine Learning model chosen
+with cross-validation.
+3- DistilBERT embeddings fine-tuned with Deep Learning.
 
 ## Getting Started
 In order to work, the two CSV files must be located in `data/`, 
@@ -68,8 +73,8 @@ true labels encoded.
 different files.
 - `variables.py`: This file includes functions that simplify the process of
 reading and saving variables.
-- `preprocessing.py`: This file includes functions for all the particular 
-preprocessing steps any of the three approaches need.
+- `preprocessing.py`: This file includes functions for the particular 
+preprocessing steps of any of the three approaches need.
 - `eda.py`: This file includes functions to perform exploratory data
 analysis with all three approaches.
 - `modeling.py`: This file includes functions for the modeling part of all three
