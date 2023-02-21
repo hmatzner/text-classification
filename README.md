@@ -64,7 +64,7 @@ pip install -r requirements.txt
 
 In this project, there are 10 python files located in `src`, 
 having six of them as main purpose being used by other modules and four
-of them to perform the execution.
+of them to perform the execution depending the model you want to use.
 
 #### The files to serve the execution files are:
 - `labels.py`: This file is hidden and contains a unique variable with the
